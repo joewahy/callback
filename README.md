@@ -65,7 +65,7 @@ pip install -r requirements.txt
 ```
 
 Create a `.env` file in the project root with a secret key, used to sign login sessions:
-```
+```ini
 SECRET_KEY=your-randomly-generated-secret-key-here
 ```
 Generate one with:
