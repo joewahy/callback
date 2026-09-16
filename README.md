@@ -49,7 +49,7 @@ A full stack web app to track internship and job applications, built with Flask 
 
 Clone the repo:
 ```bash
-git clone https://github.com/joew63/callback.git
+git clone https://github.com/joewahy/callback.git
 cd callback
 ```
 
