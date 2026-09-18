@@ -19,7 +19,6 @@ A full stack web app to track internship and job applications, built with Flask 
 - Color coded status badges (Applied, Interview, Offer, Rejected)
 - Delete individual applications
 - Clear all of your own data with a double confirm button
-- Toggle between dark and light mode
 - Log out from the dashboard header
 
 ## Technologies used
@@ -44,7 +43,7 @@ A full stack web app to track internship and job applications, built with Flask 
 - `templates/index.html` — main dashboard, rendered by Flask
 - `templates/login.html` — login page
 - `templates/signup.html` — account creation page
-- `static/style.css` — styling and dark/light mode theming for the dashboard
+- `static/style.css` — styling for the dashboard
 - `static/auth.css` — styling for the login/signup pages
 - `static/main.js` — all client side JavaScript (theme toggle, inline editing, archive, clear confirm)
 
@@ -84,6 +83,19 @@ python3 -m app
 ```
 
 Then visit `http://127.0.0.1:5000` in your browser. You'll be redirected to the login page — use the "Sign up" link to create an account first.
+
+### With Docker
+
+```bash
+docker compose up --build
+```
+
+For live-reloading during development, use the dev compose file instead:
+```bash
+docker compose -f docker-compose.dev.yml up --build
+```
+
+Either way, the app is available at `http://127.0.0.1:5000`. Make sure your `.env` file exists first — it's passed into the container via `env_file`.
 
 ## Database
 
