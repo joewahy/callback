@@ -1,8 +1,3 @@
-// Apply saved theme on load
-const saved = localStorage.getItem('theme') || 'dark';
-document.documentElement.setAttribute('data-theme', saved);
-updateIcon(saved);
-
 const dateInput = document.getElementById('date');
 if (dateInput) {
     const today = new Date().toISOString().split('T')[0];
@@ -16,18 +11,6 @@ if (window.location.search.includes('cleared=true')) {
         document.getElementById('clear-message').style.display = 'none';
         window.history.replaceState({}, document.title, '/');
     }, 5000);
-}
-
-function toggleTheme() {
-    const current = document.documentElement.getAttribute('data-theme');
-    const next = current === 'dark' ? 'light' : 'dark';
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-    updateIcon(next);
-}
-
-function updateIcon(theme) {
-    document.querySelector('.theme-icon').textContent = theme === 'dark' ? '☀️' : '🌙';
 }
 
 const clearBtn = document.querySelector('.btn-danger');
