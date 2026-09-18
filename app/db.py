@@ -22,7 +22,7 @@ def app_create():
             company_id INTEGER PRIMARY KEY AUTOINCREMENT,
             user_id INTEGER,
             name TEXT,
-            FOREIGN KEY (user_id) REFERENCES users (id)        
+            FOREIGN KEY (user_id) REFERENCES users (id)
         )
     """)
     cursor.execute("""
@@ -85,8 +85,8 @@ def get_all_applications(user_id):
     connect = get_connection()
     cursor = connect.cursor()
     result = cursor.execute("""
-                            SELECT applications.id, companies.name, applications.role, applications.status, applications.date_applied, applications.notes 
-                            FROM applications 
+                            SELECT applications.id, companies.name, applications.role, applications.status, applications.date_applied, applications.notes
+                            FROM applications
                             JOIN companies ON applications.company_id = companies.company_id
                             WHERE applications.user_id = ?
     """, (user_id,))
