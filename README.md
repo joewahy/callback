@@ -36,8 +36,11 @@ A full stack web app to track internship and job applications, built with Flask 
 
 ## Project structure
 
-- `app.py` — Flask routes, request handling, and authentication (signup, login, logout, route protection)
-- `database.py` — all SQLite database operations (create, insert, query, update, delete, clear), including user account storage
+- `app/__init__.py` — Flask app setup: config, secret key, database init, route registration
+- `app/auth.py` — authentication routes (signup, login, logout) and route protection
+- `app/dashboard.py` — main dashboard and inline-update routes
+- `app/db.py` — all SQLite database operations (create, insert, query, update, delete, clear), including user account storage
+- `app/__main__.py` — dev entry point (`python3 -m app`)
 - `templates/index.html` — main dashboard, rendered by Flask
 - `templates/login.html` — login page
 - `templates/signup.html` — account creation page
@@ -77,7 +80,7 @@ python3 -c "import secrets; print(secrets.token_hex(32))"
 ## How to run it
 
 ```bash
-python3 app.py
+python3 -m app
 ```
 
 Then visit `http://127.0.0.1:5000` in your browser. You'll be redirected to the login page — use the "Sign up" link to create an account first.
