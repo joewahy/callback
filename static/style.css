@@ -6,28 +6,7 @@
 }
 
 /* ── Theme tokens ── */
-:root[data-theme="dark"] {
-    --bg:           #0f1117;
-    --surface:      #1a1d27;
-    --surface-head: #14161f;
-    --border:       #2a2d3a;
-    --border-row:   #1f2230;
-    --text:         #e8eaf0;
-    --text-muted:   #bac1ce;
-    --text-label:   #bac1ce;
-    --placeholder:  #4a4d5a;
-    --accent:       #4f8ef7;
-    --accent-hover: #3a78e8;
-    --count-bg:     #2a2d3a;
-    --hover-row:    #1f2230;
-    --input-bg:     #0f1117;
-    --h1-color:     #ffffff;
-    --empty-border: #2a2d3a;
-    --empty-text:   #4a4d5a;
-    --h2-color:     #ffffff;
-}
-
-:root[data-theme="light"] {
+:root {
     --bg:           #f4f6fb;
     --surface:      #ffffff;
     --surface-head: #f0f2f8;
@@ -77,27 +56,6 @@ h1 {
     font-weight: 600;
     color: var(--h1-color);
     letter-spacing: -0.02em;
-}
-
-/* ── Theme toggle ── */
-.theme-toggle {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 8px 12px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.15s, border-color 0.15s, transform 0.1s;
-    line-height: 1;
-}
-
-.theme-toggle:hover {
-    background: var(--hover-row);
-    transform: scale(1.1);
-}
-
-.theme-toggle:active {
-    transform: scale(0.95);
 }
 
 /* ── Forms row ── */
