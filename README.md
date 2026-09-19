@@ -55,6 +55,21 @@ git clone https://github.com/joewahy/callback.git
 cd callback
 ```
 
+Create a `.env` file in the project root with a secret key, used to sign login sessions:
+```ini
+SECRET_KEY=your-randomly-generated-secret-key-here
+```
+Generate one with:
+```bash
+python3 -c "import secrets; print(secrets.token_hex(32))"
+```
+`.env` is excluded from version control — never commit your real secret key. This file is required either way, Docker or not.
+
+## How to run it
+
+<details>
+<summary><strong>Without Docker</strong></summary>
+
 Create and activate a virtual environment:
 ```bash
 python3 -m venv venv
@@ -66,25 +81,15 @@ Install dependencies:
 pip install -r requirements.txt
 ```
 
-Create a `.env` file in the project root with a secret key, used to sign login sessions:
-```ini
-SECRET_KEY=your-randomly-generated-secret-key-here
-```
-Generate one with:
-```bash
-python3 -c "import secrets; print(secrets.token_hex(32))"
-```
-`.env` is excluded from version control — never commit your real secret key.
-
-## How to run it
-
+Run it:
 ```bash
 python3 -m app
 ```
 
-Then visit `http://127.0.0.1:5000` in your browser. You'll be redirected to the login page — use the "Sign up" link to create an account first.
+</details>
 
-### With Docker
+<details>
+<summary><strong>With Docker</strong></summary>
 
 ```bash
 docker compose up --build
@@ -95,7 +100,9 @@ For live-reloading during development, use the dev compose file instead:
 docker compose -f docker-compose.dev.yml up --build
 ```
 
-Either way, the app is available at `http://127.0.0.1:5000`. Make sure your `.env` file exists first — it's passed into the container via `env_file`.
+</details>
+
+Either way, the app is available at `http://127.0.0.1:5000`. You'll be redirected to the login page — use the "Sign up" link to create an account first.
 
 ## Database
 
