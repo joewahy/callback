@@ -14,3 +14,6 @@ if not app.secret_key:
 db.app_create()
 
 from . import auth, dashboard  # noqa: E402  (registers routes on `app`)
+from .api import api  # noqa: E402
+
+app.register_blueprint(api)

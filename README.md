@@ -38,6 +38,7 @@ A full stack web app to track internship and job applications, built with Flask 
 - `app/__init__.py` — Flask app setup: config, secret key, database init, route registration
 - `app/auth.py` — authentication routes (signup, login, logout) and route protection
 - `app/dashboard.py` — main dashboard and inline-update routes
+- `app/api.py` — JSON REST API (`/api/v1`)
 - `app/db.py` — all SQLite database operations (create, insert, query, update, delete, clear), including user account storage
 - `app/__main__.py` — dev entry point (`python3 -m app`)
 - `templates/index.html` — main dashboard, rendered by Flask
@@ -103,6 +104,38 @@ docker compose -f docker-compose.dev.yml up --build
 </details>
 
 Either way, the app is available at `http://127.0.0.1:5000`. You'll be redirected to the login page — use the "Sign up" link to create an account first.
+
+## REST API
+
+A JSON API is available under `/api/v1`, alongside the web UI. It uses the same accounts and the same session cookie for authentication: log in once, then send the cookie with each request. Request bodies must be JSON (`Content-Type: application/json`); errors are returned as `{"error": "..."}`.
+
+| Method | Path | Description |
+| --- | --- | --- |
+| `POST` | `/api/v1/signup` | Create an account (`email`, `password`) |
+| `POST` | `/api/v1/login` | Log in (`email`, `password`) and receive a session cookie |
+| `POST` | `/api/v1/logout` | Log out |
+| `GET` | `/api/v1/companies` | List your companies |
+| `POST` | `/api/v1/companies` | Add a company (`name`); `201` if new, `200` if it already exists |
+| `GET` | `/api/v1/applications` | List your applications |
+| `POST` | `/api/v1/applications` | Add an application (`company`, `role`, optional `status`, `date_applied`, `notes`); the company must already exist |
+| `GET` | `/api/v1/applications/<id>` | Get one application |
+| `PATCH` | `/api/v1/applications/<id>` | Update any of `role`, `status`, `date_applied`, `notes` |
+| `DELETE` | `/api/v1/applications/<id>` | Delete one application |
+| `DELETE` | `/api/v1/data` | Delete all of your companies and applications |
+
+`status` must be one of `Applied`, `Interview`, `Offer`, `Rejected`. Everything is scoped to the logged-in account; another account's ids return `404`.
+
+```bash
+curl -c cookies.txt -H 'Content-Type: application/json' \
+  -d '{"email": "you@gmail.com", "password": "secret"}' http://127.0.0.1:5000/api/v1/login
+
+curl -b cookies.txt -H 'Content-Type: application/json' \
+  -d '{"name": "Google"}' http://127.0.0.1:5000/api/v1/companies
+
+curl -b cookies.txt -H 'Content-Type: application/json' \
+  -d '{"company": "Google", "role": "SWE Intern", "date_applied": "2026-10-01"}' \
+  http://127.0.0.1:5000/api/v1/applications
+```
 
 ## Database
 
