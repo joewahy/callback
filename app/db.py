@@ -44,20 +44,26 @@ def app_create():
 def add_company(user_id, name):
     connect = get_connection()
     cursor = connect.cursor()
-    contains = cursor.execute("SELECT name FROM companies WHERE name = ? COLLATE NOCASE AND user_id = ?", (name, user_id))
-    if contains.fetchone() is None:
+    contains = cursor.execute("SELECT company_id, name FROM companies WHERE name = ? COLLATE NOCASE AND user_id = ?", (name, user_id))
+    row = contains.fetchone()
+    if row is None:
         cursor.execute("""
             INSERT INTO companies (user_id, name) VALUES (?, ?)
         """, (user_id, name))
         print(f"Inserted {name}")
+        company_id, created = cursor.lastrowid, True
+    else:
+        company_id, name, created = row[0], row[1], False
     connect.commit()
     connect.close()
+    return company_id, name, created
 
 def add_application(user_id, name, role, status, date_applied, notes):
     connect = get_connection()
     cursor = connect.cursor()
     result = cursor.execute("SELECT company_id FROM companies WHERE name = ? COLLATE NOCASE AND user_id = ?", (name, user_id))
     row = result.fetchone()
+    application_id = None
     if row is None:
         print("add company first")
     else:
@@ -65,9 +71,11 @@ def add_application(user_id, name, role, status, date_applied, notes):
         cursor.execute("""
             INSERT INTO applications (user_id, company_id, role, status, date_applied, notes) VALUES (?, ?, ?, ?, ?, ?)
         """, (user_id, company_id, role, status, date_applied, notes,))
+        application_id = cursor.lastrowid
         print(f"Inserted application for {name}")
     connect.commit()
     connect.close()
+    return application_id
 
 def get_all_companies(user_id):
     connect = get_connection()
@@ -110,8 +118,32 @@ def update_application(user_id, application_id, role, status, date_applied, note
         SET role = ?, status = ?, date_applied = ?, notes = ?
         WHERE id = ? AND user_id = ?
     """, (role, status, date_applied, notes, application_id, user_id))
+    updated = cursor.rowcount > 0
     connect.commit()
     connect.close()
+    return updated
+
+def get_application(user_id, application_id):
+    connect = get_connection()
+    cursor = connect.cursor()
+    result = cursor.execute("""
+        SELECT applications.id, companies.name, applications.role, applications.status, applications.date_applied, applications.notes
+        FROM applications
+        JOIN companies ON applications.company_id = companies.company_id
+        WHERE applications.id = ? AND applications.user_id = ?
+    """, (application_id, user_id))
+    data = result.fetchone()
+    connect.close()
+    return data
+
+def delete_application(user_id, application_id):
+    connect = get_connection()
+    cursor = connect.cursor()
+    cursor.execute("DELETE FROM applications WHERE id = ? AND user_id = ?", (application_id, user_id))
+    deleted = cursor.rowcount > 0
+    connect.commit()
+    connect.close()
+    return deleted
 
 def create_user(email, password):
     connect = get_connection()
