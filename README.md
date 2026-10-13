@@ -17,9 +17,10 @@ A full stack web app to track internship and job applications, built with Flask 
 - Inline edit applications — update role, status, date, and notes without leaving the page
 - Archive applications to visually strike them out (currently visual only — resets on reload, see Roadmap)
 - Color coded status badges (Applied, Interview, Offer, Rejected)
-- Delete individual applications
+- Delete individual applications (via the REST API; the dashboard itself only offers clearing all data)
 - Clear all of your own data with a double confirm button
 - Log out from the dashboard header
+- Manage companies and applications programmatically through a JSON REST API, see [REST API](#rest-api)
 
 ## Technologies used
 
@@ -156,6 +157,7 @@ The database file `applications.db` is created automatically on first run and is
 - Login and signup return the same generic error message ("Invalid email or password") on failure, so a failed attempt doesn't reveal whether a given email has an account.
 - Logout is a `POST`-only route, so it can't be triggered by a plain link or embedded image.
 - Every read, write, update, and delete on companies/applications is scoped to `session['user_id']` at the database level — verified by attempting to edit another account's application id directly, which is correctly rejected.
+- The REST API authenticates with the same session cookie (no API tokens) and shares that scoping, so another account's ids return `404`. Write endpoints only accept a JSON body, which rules out plain cross-site form posts.
 
 ## Roadmap
 
